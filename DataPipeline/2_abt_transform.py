@@ -30,11 +30,11 @@ CFG_PATH = Path(__file__).resolve().parent / "config.yaml"
 with open(CFG_PATH, "r", encoding="utf-8") as f:
     CFG = yaml.safe_load(f)
 
-CLEAN = ROOT / CFG["paths"]["clean"]
-ABT   = ROOT / CFG["paths"]["abt"]
-ID    = CFG["columns"]["id"]
-TGT   = CFG["columns"]["target"]
-A     = CFG["abt"]
+CLEAN_DATA_PATH = ROOT / CFG["paths"]["clean"]
+ABT_PATH = ROOT / CFG["paths"]["abt"]
+TARGET_COLUMNS = CFG["target_columns"]
+ABT_PARAMETERS = CFG["abt"]
+COLUMNS_TO_DROP = CFG["columns_to_drop"]
 
 
 def engenharia_atributos(df: pd.DataFrame) -> pd.DataFrame:
@@ -60,69 +60,74 @@ def engenharia_atributos(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def main():
-    if not CLEAN.exists():
-        sys.exit(f"[ERRO] clean_data nao encontrado: {CLEAN}\n"
+    if not CLEAN_DATA_PATH.exists():
+        sys.exit(f"[ERRO] clean_data nao encontrado: {CLEAN_DATA_PATH}\n"
                  f"Rode antes: python data_sanitization.py")
 
-    print(f"[1/6] Lendo base limpa: {CLEAN.name}")
-    df = pd.read_csv(CLEAN)
+    print(f"[1/7] Lendo base limpa: {CLEAN_DATA_PATH.name}")
+    df = pd.read_csv(CLEAN_DATA_PATH)
     print(f"      -> {df.shape[0]:,} linhas x {df.shape[1]} colunas")
 
     # guardar id e alvo, trabalhar nas features
-    y  = df[TGT]
-    ids = df[ID]
-    X  = df.drop(columns=[TGT, ID])
+    y  = df[TARGET_COLUMNS["target"]]
+    ids = df[TARGET_COLUMNS["id"]]
+    model_data  = df.drop(columns=[TARGET_COLUMNS["id"], TARGET_COLUMNS["target"]])
 
     # 1. Descartar colunas muito vazias
-    thr = A["null_drop_threshold"]
-    null_ratio = X.isna().mean()
+    thr = ABT_PARAMETERS["null_drop_threshold"]
+    null_ratio = model_data.isna().mean()
     drop_cols = null_ratio[null_ratio > thr].index.tolist()
-    X = X.drop(columns=drop_cols)
-    print(f"[2/6] Colunas descartadas por >{thr:.0%} nulos: {len(drop_cols)}")
+    model_data = model_data.drop(columns=drop_cols)
+    print(f"[2/7] Colunas descartadas por >{thr:.0%} nulos: {len(drop_cols)}")
 
     # 2. Engenharia de atributos
-    X = engenharia_atributos(X)
-    print(f"[3/6] Features derivadas criadas (idade, razoes, EXT_SOURCE_*)")
+    model_data = engenharia_atributos(model_data)
+    print(f"[3/7] Features derivadas criadas (idade, razoes, EXT_SOURCE_*)")
 
-    # 3. Encoding de categoricas
-    cat_cols = X.select_dtypes(include="object").columns.tolist()
-    freq_cols = [c for c in A["freq_encode_cols"] if c in cat_cols]
+    # 3. Delete de colunas que não são necessárias
+    model_data = model_data.drop(columns=COLUMNS_TO_DROP, errors="ignore")
+    print(f"[4/7] Colunas descartadas por serem desnecessárias: {len(COLUMNS_TO_DROP)}")
+
+    # 4. Encoding de categoricas
+    cat_cols = model_data.select_dtypes(include="object").columns.tolist()
+    freq_cols = [c for c in ABT_PARAMETERS["freq_encode_cols"] if c in cat_cols]
     # 3a. frequency encoding (alta cardinalidade)
     for c in freq_cols:
-        freq = X[c].value_counts(normalize=True)
-        X[c + "_FREQ"] = X[c].map(freq).fillna(0.0)
-    X = X.drop(columns=freq_cols)
+        freq = model_data[c].value_counts(normalize=True)
+        model_data[c + "_FREQ"] = model_data[c].map(freq).fillna(0.0)
+    model_data = model_data.drop(columns=freq_cols)
     # 3b. one-hot nas demais (dentro do limite de cardinalidade)
     onehot_cols = [c for c in cat_cols if c not in freq_cols
-                   and X[c].nunique(dropna=True) <= A["onehot_max_cardinality"]]
-    X = pd.get_dummies(X, columns=onehot_cols, dummy_na=True, dtype="int8")
+                   and model_data[c].nunique(dropna=True) <= ABT_PARAMETERS["onehot_max_cardinality"]]
+    model_data = pd.get_dummies(model_data, columns=onehot_cols, dummy_na=True, dtype="int8")
     # qualquer categorica restante (acima do limite e nao listada) -> frequency
-    resto = X.select_dtypes(include="object").columns.tolist()
+    resto = model_data.select_dtypes(include="object").columns.tolist()
     for c in resto:
-        freq = X[c].value_counts(normalize=True)
-        X[c + "_FREQ"] = X[c].map(freq).fillna(0.0)
+        freq = model_data[c].value_counts(normalize=True)
+        model_data[c + "_FREQ"] = model_data[c].map(freq).fillna(0.0)
     if resto:
-        X = X.drop(columns=resto)
-    print(f"[4/6] Encoding: {len(freq_cols)+len(resto)} frequency + {len(onehot_cols)} one-hot")
+        model_data = model_data.drop(columns=resto)
+    print(f"[5/7] Encoding: {len(freq_cols)+len(resto)} frequency + {len(onehot_cols)} one-hot")
 
-    # 4. Imputacao numerica pela mediana
-    num_cols = X.select_dtypes(include=[np.number]).columns
-    X[num_cols] = X[num_cols].fillna(X[num_cols].median())
+    # 5. Imputacao numerica pela mediana
+    num_cols = model_data.select_dtypes(include=[np.number]).columns
+    model_data[num_cols] = model_data[num_cols].fillna(model_data[num_cols].median())
     # substituir eventuais infinitos por 0 (razoes com denominador minimo)
-    X = X.replace([np.inf, -np.inf], 0.0)
-    print(f"[5/6] Imputacao mediana aplicada; nulos restantes: {int(X.isna().sum().sum())}")
+    model_data = model_data.replace([np.inf, -np.inf], 0.0)
+    print(f"[6/7] Imputacao mediana aplicada; nulos restantes: {int(model_data.isna().sum().sum())}")
 
     # cast para float32 (opcional, reduz tamanho)
-    if A.get("cast_float32", False):
-        fcols = X.select_dtypes(include=["float64"]).columns
-        X[fcols] = X[fcols].astype("float32")
+    if ABT_PARAMETERS.get("cast_float32", False):
+        fcols = model_data.select_dtypes(include=["float64"]).columns
+        model_data[fcols] = model_data[fcols].astype("float32")
 
-    # 5. Montar ABT final = ID + TARGET + features
+    # 6. Montar ABT final = ID + TARGET + features
     abt = pd.concat([ids.reset_index(drop=True), y.reset_index(drop=True),
-                     X.reset_index(drop=True)], axis=1)
-    ABT.parent.mkdir(parents=True, exist_ok=True)
-    abt.to_csv(ABT, index=False)
-    print(f"\n[6/6][OK] ABT salva em: {ABT}")
+                     model_data.reset_index(drop=True)], axis=1)
+    ABT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    abt.to_csv(ABT_PATH, index=False)
+
+    print(f"\n[7/7][OK] ABT salva em: {ABT_PATH}")
     print(f"          {abt.shape[0]:,} linhas x {abt.shape[1]} colunas")
     print(f"          Taxa de inadimplencia preservada: {y.mean():.2%}")
 

@@ -1,4 +1,4 @@
-# 📊 Modelo de Machine Learning para Definição Inteligente de Limite de Crédito
+# 📊 Modelo de Machine Learning de Sistema Inteligente de Limite de Credito
 
 ## 📖 Descrição do Projeto
 
@@ -16,7 +16,7 @@ Durante o desenvolvimento são abordadas etapas como:
 - 📈 Avaliação dos resultados por meio de métricas adequadas;
 - 💡 Interpretação dos resultados para apoiar a tomada de decisão.
 
-O principal objetivo é desenvolver uma solução baseada em Inteligência Artificial que auxilie na definição do limite de crédito mais adequado para cada cliente, considerando seu perfil financeiro e o risco associado, aproximando a prática acadêmica dos desafios encontrados no mercado de trabalh
+O principal objetivo é desenvolver uma solução baseada em Inteligência Artificial que auxilie na definição do limite de crédito mais adequado para cada cliente, considerando seu perfil financeiro e o risco associado, aproximando a prática acadêmica dos desafios encontrados no mercado de trabalho.
 
 ---
 
@@ -26,7 +26,8 @@ A definição do limite de crédito é uma etapa estratégica para instituiçõe
 
 Conceder o mesmo limite de empréstimo para clientes com perfis financeiros distintos pode resultar tanto em perdas financeiras, ao oferecer crédito acima da capacidade de pagamento, quanto em perda de oportunidades de negócio, ao conceder limites inferiores ao potencial de clientes de baixo risco.
 
-Embora dois clientes possam apresentar um bom histórico de pagamento, suas características financeiras, capacidade de pagamento e perfil de risco podem indicar limites de crédito bastante diferentes. Por exemplo, enquanto um cliente pode ter capacidade para um empréstimo de **R$ 5.000**, outro pode ser elegível para **R$ 40.000**.
+Embora dois clientes possam apresentar um bom histórico de pagamento, suas características financeiras, capacidade de pagamento e perfil de risco podem indicar limites de crédito bastante diferentes. 
+Por exemplo, enquanto um cliente pode ter capacidade para um empréstimo de `R$ 5.000`, outro pode ser elegível para `R$ 40.000`.
 
 Em muitas instituições, essa decisão ainda é baseada em regras fixas e critérios pouco personalizados.
 
@@ -42,25 +43,26 @@ O objetivo deste projeto é desenvolver uma solução baseada em Machine Learnin
 
 ```text
 .
-├── 📁 data/
-│   ├── 📁 raw/
-│   ├── 📁 processed/
-│   └── 📁 external/
+├── 📁 Dados/
+│   ├── 📄 raw.csv
+│   ├── 📄 clean_data.csv
+│   └── 📄 abt.csv
 │
-├── 📁 notebooks/
+├── 📁 DataPipeline/
+│   ├── 📄 1_data_sanitization.py
+│   ├── 📄 2_abt_transform.py
+│   ├── 📄 config.yaml
 │
-├── 📁 src/
-│   ├── 📁 data/
-│   ├── 📁 features/
-│   ├── 📁 models/
-│   ├── 📁 evaluation/
-│   └── 📁 utils/
-│
-├── 📁 models/
-├── 📁 reports/
-│   ├── 📁 figures/
-│   └── 📁 metrics/
-│
+├── 📁 DataValidator/
+│   ├── 📄 validator.py
+
+├── 📁 model/
+│   ├── 📄 3_train.py
+│   ├── 📄 4_evaluation.ipynb
+│   ├── 📄 config.yaml
+│   ├── 📄 credit_policy.py
+
+├── 📄 exp_analysis.ipynb
 ├── 📄 requirements.txt
 ├── 📄 README.md
 └── 📄 .gitignore
@@ -68,21 +70,21 @@ O objetivo deste projeto é desenvolver uma solução baseada em Machine Learnin
 
 ## 📁 Descrição dos Diretórios
 
-| Diretório | Descrição |
-|-----------|-----------|
-| 📁 **data/raw** | Dados originais obtidos da fonte, sem qualquer tratamento. |
-| 📁 **data/processed** | Dados tratados e prontos para utilização nos modelos. |
-| 📁 **data/external** | Bases de dados complementares utilizadas no projeto. |
-| 📓 **notebooks** | Notebooks de exploração dos dados, experimentos e análises. |
-| 🛠️ **src/data** | Scripts de leitura, limpeza e preparação dos dados. |
-| ⚙️ **src/features** | Scripts responsáveis pela engenharia e seleção de atributos. |
-| 🤖 **src/models** | Scripts para treinamento, validação e salvamento dos modelos. |
-| 📈 **src/evaluation** | Scripts de avaliação e cálculo das métricas dos modelos. |
-| 🔧 **src/utils** | Funções auxiliares reutilizadas no projeto. |
-| 💾 **models** | Modelos treinados e serializados (.pkl, .joblib, etc.). |
-| 📊 **reports** | Relatórios e resultados gerados durante o projeto. |
-| 🖼️ **reports/figures** | Gráficos e visualizações. |
-| 📑 **reports/metrics** | Métricas e resultados dos experimentos. |
+| Diretório/Arquivo                           | Descrição                                                         |
+|---------------------------------------------|-------------------------------------------------------------------|
+| 📁 **Dados/raw.csv**                        | Dados originais obtidos da fonte, sem qualquer tratamento.        |
+| 📁 **Dados/clean_data.csv**                 | Dados tratados e prontos para geração da ABT.                     |
+| 📁 **Dados/abt.csv**                        | Dados tratados e prontos para utilização nos modelos.             |
+| 🛠️ **DataPipeline/1_data_sanitization.py** | Scripts de leitura, limpeza e preparação dos dados.               |
+| 📑 **DataPipeline/2_abt_transform.py**              | Scripts responsáveis pela engenharia e seleção de atributos.      |
+| ⚙️ **DataPipeline/config.yaml**                     | Arquivo de configuração para os arquivos em DataPipeline.         |
+| 🔧 **DataValidator/validator.py**           | Classes do Pydantic e validação dos contratos de dados esperados. |
+| 💾 **Model/3_train.py**                     | Script para treinamento, validação e salvamento dos modelos.      |
+| 📓 **Model/4_evaluation.ipynb**             | Notebooks de exploração dos dados, experimentos e análises.       |
+| 🤖 **Model/credit_policy.py**               | Script com a politica de crédito que será utilizada.              |
+| ⚙️ **Model/config.yaml**                    | Arquivo de configuração do modelo.                                |
+| 📊 **exp_analysis**                         | Notebooks de exploração dos dados, experimentos e análises.       |
+| 📑 **requirements.txt**                     | Métricas e resultados dos experimentos.                           |
 
 ---
 
@@ -128,7 +130,6 @@ O projeto foi desenvolvido seguindo as seguintes etapas:
 - 🌲 Random Forest
 - 🚀 XGBoost
 - ⚡ LightGBM
-- 🐱 CatBoost
 
 ---
 
@@ -163,7 +164,7 @@ O projeto foi desenvolvido seguindo as seguintes etapas:
 ```bash
 git clone <url-do-repositorio>
 
-cd nome-do-projeto
+cd projeto-final-fia
 ```
 
 ---
@@ -196,40 +197,42 @@ pip install -r requirements.txt
 
 ---
 
+
+##  Gerando a ABT
+1. Crie uma pasta na raiz do repositório com o nome `home-credit-default-risk`
+2. Baixe o arquivo `application_train.csv` no link `https://www.kaggle.com/competitions/home-credit-default-risk/overview`
+3. Execute o script de limpeza dos dados:
+
+```bash
+python DataPipeline/1_data_sanitization.py
+```
+4. Execute o script de criação da ABT.
+```bash
+python DataPipeline/2_abt_transform.py
+```
+
 # 🏋️ Como Treinar o Modelo
 
 Execute:
 
 ```bash
-python src/models/train.py
-```
-
-Caso o treinamento seja realizado em um notebook:
-
-```text
-📓 notebooks/model_training.ipynb
+python Model/3_train.py
 ```
 
 O modelo treinado será salvo em:
 
 ```text
-📁 models/
+📁 Model/
 ```
 
 ---
 
 # 📊 Como Avaliar o Modelo
 
-Execute:
-
-```bash
-python src/evaluation/evaluate.py
-```
-
-Os resultados serão armazenados em:
+Rode o arquivo:
 
 ```text
-📁 reports/metrics/
+📓 Model/4_evaluation.ipynb
 ```
 
 ---

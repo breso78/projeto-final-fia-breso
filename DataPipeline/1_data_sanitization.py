@@ -23,6 +23,9 @@ import numpy as np
 import pandas as pd
 import yaml
 
+
+from DataValidator.validator import data_validator
+
 # ----- localizar raiz do projeto e carregar config -----
 ROOT = Path(__file__).resolve().parent.parent          # pasta 'Projeto Final - TCC'
 CFG_PATH = Path(__file__).resolve().parent / "config.yaml"
@@ -31,7 +34,7 @@ with open(CFG_PATH, "r", encoding="utf-8") as f:
 
 RAW   = ROOT / CFG["paths"]["raw"]
 CLEAN = ROOT / CFG["paths"]["clean"]
-ID    = CFG["columns"]["id"]
+ID    = CFG["target_columns"]["id"]
 SAN   = CFG["sanitization"]
 
 
@@ -40,8 +43,16 @@ def main():
         sys.exit(f"[ERRO] Base bruta nao encontrada: {RAW}\n"
                  f"Ajuste 'paths.raw' no config.yaml.")
 
-    print(f"[1/6] Lendo base bruta: {RAW.name}")
+    print(f"[1/8] Lendo base bruta: {RAW.name}")
     df = pd.read_csv(RAW)
+
+    print(f"[2/8 Iniciando validação do contrato de dados da camada RAW: {RAW.name}")
+
+    records = df.replace({np.nan: None}).to_dict(orient="records")
+    data_validator(data=records, model="RAW")
+
+    print(f"[3/8] Lendo base bruta: {RAW.name}")
+
     n0, c0 = df.shape
     print(f"      -> {n0:,} linhas x {c0} colunas")
 
@@ -50,7 +61,7 @@ def main():
     mask = df["DAYS_EMPLOYED"] == sent
     df["FLAG_DAYS_EMPLOYED_ANOM"] = mask.astype("int8")
     df.loc[mask, "DAYS_EMPLOYED"] = np.nan
-    print(f"[2/6] DAYS_EMPLOYED sentinela ({sent}) -> NaN em {int(mask.sum()):,} linhas")
+    print(f"[4/8] DAYS_EMPLOYED sentinela ({sent}) -> NaN em {int(mask.sum()):,} linhas")
 
     # 3. Categorias 'XNA' -> NaN
     for col in SAN["xna_to_nan"]:
@@ -63,20 +74,25 @@ def main():
     obj_cols = df.select_dtypes(include="object").columns
     for col in obj_cols:
         df[col] = df[col].str.strip().replace(r"\s+", " ", regex=True)
-    print(f"[4/6] Texto padronizado em {len(obj_cols)} colunas categoricas")
+    print(f"[5/8] Texto padronizado em {len(obj_cols)} colunas categoricas")
 
     # 5. Renda absurda (outlier) -> NaN
     cap = SAN["income_cap"]
     n_out = int((df["AMT_INCOME_TOTAL"] > cap).sum())
     df.loc[df["AMT_INCOME_TOTAL"] > cap, "AMT_INCOME_TOTAL"] = np.nan
-    print(f"[5/6] AMT_INCOME_TOTAL > {cap:,} -> NaN em {n_out:,} linhas")
+    print(f"[6/8] AMT_INCOME_TOTAL > {cap:,} -> NaN em {n_out:,} linhas")
 
     # 6. Remover duplicatas pela chave
     dup = int(df.duplicated(subset=[ID]).sum())
     df = df.drop_duplicates(subset=[ID])
-    print(f"[6/6] Duplicatas por {ID} removidas: {dup:,}")
+    print(f"[7/8] Duplicatas por {ID} removidas: {dup:,}")
 
     CLEAN.parent.mkdir(parents=True, exist_ok=True)
+
+    print(f"[8/8 Iniciando validação do contrato de dados para os dados da camada SILVER.")
+    clean_data = df.replace({np.nan: None}).to_dict(orient="records")
+    data_validator(data=clean_data, model="SILVER")
+
     df.to_csv(CLEAN, index=False)
     print(f"\n[OK] clean_data salvo em: {CLEAN}")
     print(f"     {df.shape[0]:,} linhas x {df.shape[1]} colunas")

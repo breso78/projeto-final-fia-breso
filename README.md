@@ -75,24 +75,22 @@ O objetivo deste projeto é desenvolver uma solução baseada em Machine Learnin
 | 📁 **Dados/raw.csv**                        | Dados originais obtidos da fonte, sem qualquer tratamento.        |
 | 📁 **Dados/clean_data.csv**                 | Dados tratados e prontos para geração da ABT.                     |
 | 📁 **Dados/abt.csv**                        | Dados tratados e prontos para utilização nos modelos.             |
-| 🛠️ **DataPipeline/1_data_sanitization.py** | Scripts de leitura, limpeza e preparação dos dados.               |
-| 📑 **DataPipeline/2_abt_transform.py**              | Scripts responsáveis pela engenharia e seleção de atributos.      |
-| ⚙️ **DataPipeline/config.yaml**                     | Arquivo de configuração para os arquivos em DataPipeline.         |
+| 🛠️ **DataPipeline/1_data_sanitization.py**  | Scripts de leitura, limpeza e preparação dos dados.               |
+| 📑 **DataPipeline/2_abt_transform.py**      | Scripts responsáveis pela engenharia e seleção de atributos.      |
+| ⚙️ **DataPipeline/config.yaml**             | Arquivo de configuração para os arquivos em DataPipeline.         |
 | 🔧 **DataValidator/validator.py**           | Classes do Pydantic e validação dos contratos de dados esperados. |
 | 💾 **Model/3_train.py**                     | Script para treinamento, validação e salvamento dos modelos.      |
 | 📓 **Model/4_evaluation.ipynb**             | Notebooks de exploração dos dados, experimentos e análises.       |
 | 🤖 **Model/credit_policy.py**               | Script com a politica de crédito que será utilizada.              |
 | ⚙️ **Model/config.yaml**                    | Arquivo de configuração do modelo.                                |
 | 📊 **exp_analysis**                         | Notebooks de exploração dos dados, experimentos e análises.       |
-| 📑 **requirements.txt**                     | Métricas e resultados dos experimentos.                           |
+| 📑 **requirements.txt**                     | Lista das bibliotecas e dependências necessárias para executar o projeto.|
 
 ---
 
 # 🗃️ Base de Dados
 
 O projeto utiliza a base pública Home Credit Default Risk, disponibilizada no Kaggle. A base contém aproximadamente 307 mil solicitações de crédito com informações cadastrais, financeiras e comportamentais dos clientes. O objetivo é prever a probabilidade de inadimplência (TARGET), permitindo apoiar a definição do limite de crédito adequado para novos clientes.
-
-**Exemplo:**
 
 A base contém informações como:
 
@@ -243,14 +241,9 @@ Rode o arquivo:
 | Logistic Regression  | 0.7501     | 0.3707     | 0.5002     |
 | HistGradientBoosting | **0.7659** | **0.3976** | **0.5319** |
 
-
 ---
 
 # ⭐ Melhor Modelo
-
-Descreva o modelo escolhido e o motivo.
-
-**Exemplo:**
 
 O modelo HistGradientBoosting apresentou o melhor desempenho, alcançando:
 

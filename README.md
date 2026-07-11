@@ -142,7 +142,8 @@ Decisão Final de Crédito
 
 # 🗃️ Base de Dados
 
-O projeto utiliza a base pública Home Credit Default Risk, disponibilizada no Kaggle. A base contém aproximadamente 307 mil solicitações de crédito com informações cadastrais, financeiras e comportamentais dos clientes.
+O projeto utiliza a base pública Home Credit Default Risk, disponibilizada no Kaggle.
+A base contém aproximadamente 307 mil solicitações de crédito com informações cadastrais, financeiras e comportamentais dos clientes.
 O objetivo é prever a probabilidade de inadimplência (TARGET), permitindo apoiar a definição do limite de crédito adequado para novos clientes.
 
 A base contém informações como:

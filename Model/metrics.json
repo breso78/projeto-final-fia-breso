@@ -1,0 +1,79 @@
+{
+  "best_model": "HistGradientBoosting",
+  "threshold_otimo": 0.4974,
+  "logistic_regression": {
+    "auc": 0.7501,
+    "ks": 0.3707,
+    "gini": 0.5002
+  },
+  "hist_gradient_boosting": {
+    "auc": 0.7659,
+    "ks": 0.3976,
+    "gini": 0.5319
+  },
+  "n_treino": 246008,
+  "n_teste": 61503,
+  "taxa_inadimplencia": 0.0807,
+  "top_features": [
+    [
+      "EXT_SOURCE_MEAN",
+      0.07096
+    ],
+    [
+      "CREDIT_TERM",
+      0.01114
+    ],
+    [
+      "AGE_YEARS",
+      0.00844
+    ],
+    [
+      "EXT_SOURCE_1",
+      0.00646
+    ],
+    [
+      "CREDIT_GOODS_RATIO",
+      0.0058
+    ],
+    [
+      "EXT_SOURCE_3",
+      0.0053
+    ],
+    [
+      "CODE_GENDER_M",
+      0.00454
+    ],
+    [
+      "CODE_GENDER_F",
+      0.00348
+    ],
+    [
+      "EMPLOYED_TO_AGE",
+      0.00318
+    ],
+    [
+      "DAYS_ID_PUBLISH",
+      0.00318
+    ],
+    [
+      "FLAG_OWN_CAR_N",
+      0.0029
+    ],
+    [
+      "NAME_EDUCATION_TYPE_Higher education",
+      0.0027
+    ],
+    [
+      "REGION_RATING_CLIENT_W_CITY",
+      0.00217
+    ],
+    [
+      "AMT_ANNUITY",
+      0.00209
+    ],
+    [
+      "YEARS_EMPLOYED",
+      0.00195
+    ]
+  ]
+}

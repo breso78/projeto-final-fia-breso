@@ -250,7 +250,7 @@ Descreva o modelo escolhido e o motivo.
 
 **Exemplo:**
 
-O modelo HistGradientBoosting apresentou o melhor desempenho, alcançando AUC de 0,7659 e KS de 0,3976. Por esse motivo foi selecionado como modelo final para estimar a Probabilidade de Default (PD), utilizada posteriormente pela política de concessão de crédito..
+O modelo HistGradientBoosting apresentou o melhor desempenho, alcançando AUC de 0,7659 e KS de 0,3976. Por esse motivo foi selecionado como modelo final para estimar a Probabilidade de Default (PD), utilizada posteriormente pela política de concessão de crédito.
 
 ---
 

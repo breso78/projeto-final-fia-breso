@@ -100,6 +100,6 @@ columns_to_drop: #colunas que serão removidas, de acordo com a análise dos dad
   - YEARS_BUILD_MEDI
 
 metadata:
-  autor: "Daniel, Claudia"
+  autor: "Daniel, Claudia, Elizabeth"
   etapa_crisp_dm: "Data Preparation (ABT)"
   descricao: "Visao analitica em granularidade de solicitacao de credito, pronta para modelagem de classificacao binaria."

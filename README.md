@@ -126,19 +126,19 @@ O projeto foi desenvolvido seguindo as seguintes etapas:
 # 🤖 Modelos Avaliados
 
 - 📉 Regressão Logística
-- 🌳 Decision Tree
+- 🌲 HistGradientBoosting (Modelo Principal)
 
 ---
 
 # 📏 Métricas Utilizadas
 
--📈 ROC-AUC 
--📏 KS (Kolmogorov-Smirnov) 
--📊 Gini 
--🧩 Matriz de Confusão 
--🎯 Precision 
--🔎 Recall 
--⚖️ F1-Score
+- 📈 ROC-AUC 
+- 📏 KS (Kolmogorov-Smirnov) 
+- 📊 Gini 
+- 🧩 Matriz de Confusão 
+- 🎯 Precision 
+- 🔎 Recall 
+- ⚖️ F1-Score
 ---
 
 # 🛠️ Tecnologias Utilizadas
@@ -148,7 +148,9 @@ O projeto foi desenvolvido seguindo as seguintes etapas:
 - 🔢 NumPy
 - 🤖 Scikit-Learn
 - 📊 Matplotlib
-- 📈 Seaborn
+- 📄 PyYAML
+- 💾 Joblib
+- ✅ Pydantic
 
 
 ---
@@ -250,7 +252,13 @@ Descreva o modelo escolhido e o motivo.
 
 **Exemplo:**
 
-O modelo HistGradientBoosting apresentou o melhor desempenho, alcançando AUC de 0,7659 e KS de 0,3976. Por esse motivo foi selecionado como modelo final para estimar a Probabilidade de Default (PD), utilizada posteriormente pela política de concessão de crédito.
+O modelo HistGradientBoosting apresentou o melhor desempenho, alcançando:
+
+- ROC-AUC: 0.7659
+- KS: 0.3976
+- Gini: 0.5319
+
+Por esse motivo foi selecionado como modelo final para estimar a Probabilidade de Default (PD), utilizada posteriormente pela política de concessão de crédito.
 
 ---
 

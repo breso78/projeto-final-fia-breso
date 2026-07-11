@@ -90,7 +90,7 @@ O objetivo deste projeto é desenvolver uma solução baseada em Machine Learnin
 
 # 🗃️ Base de Dados
 
-Descreva a base de dados utilizada.
+O projeto utiliza a base pública Home Credit Default Risk, disponibilizada no Kaggle. A base contém aproximadamente 307 mil solicitações de crédito com informações cadastrais, financeiras e comportamentais dos clientes. O objetivo é prever a probabilidade de inadimplência (TARGET), permitindo apoiar a definição do limite de crédito adequado para novos clientes.
 
 **Exemplo:**
 

@@ -132,15 +132,13 @@ O projeto foi desenvolvido seguindo as seguintes etapas:
 
 # 📏 Métricas Utilizadas
 
-📈 ROC-AUC 
-📏 KS (Kolmogorov-Smirnov) 
-📊 Gini 
-🧩 Matriz de Confusão 
-🎯 Precision 
-🔎 Recall 
-⚖️ F1-Score
-
-
+-📈 ROC-AUC 
+-📏 KS (Kolmogorov-Smirnov) 
+-📊 Gini 
+-🧩 Matriz de Confusão 
+-🎯 Precision 
+-🔎 Recall 
+-⚖️ F1-Score
 ---
 
 # 🛠️ Tecnologias Utilizadas

@@ -127,20 +127,19 @@ O projeto foi desenvolvido seguindo as seguintes etapas:
 
 - 📉 Regressão Logística
 - 🌳 Decision Tree
-- 🌲 Random Forest
-- 🚀 XGBoost
-- ⚡ LightGBM
 
 ---
 
 # 📏 Métricas Utilizadas
 
-- ✅ Accuracy
-- 🎯 Precision
-- 🔎 Recall
-- ⚖️ F1-Score
-- 📈 ROC-AUC
-- 📉 Matriz de Confusão
+📈 ROC-AUC 
+📏 KS (Kolmogorov-Smirnov) 
+📊 Gini 
+🧩 Matriz de Confusão 
+🎯 Precision 
+🔎 Recall 
+⚖️ F1-Score
+
 
 ---
 
@@ -152,8 +151,7 @@ O projeto foi desenvolvido seguindo as seguintes etapas:
 - 🤖 Scikit-Learn
 - 📊 Matplotlib
 - 📈 Seaborn
-- 🚀 XGBoost
-- ⚡ LightGBM
+
 
 ---
 
@@ -239,11 +237,12 @@ Rode o arquivo:
 
 # 🏅 Resultados
 
-| Modelo | ROC-AUC | Recall | Precision |
-|---------|:------:|:------:|:---------:|
-| Regressão Logística | 0.74 | 0.63 | 0.70 |
-| Random Forest | 0.79 | 0.71 | 0.74 |
-| XGBoost | **0.82** | **0.76** | **0.78** |
+
+| Modelo               | ROC-AUC    | KS         | Gini       |
+| -------------------- | ---------- | ---------- | ---------- |
+| Logistic Regression  | 0.7501     | 0.3707     | 0.5002     |
+| HistGradientBoosting | **0.7659** | **0.3976** | **0.5319** |
+
 
 ---
 
@@ -253,7 +252,7 @@ Descreva o modelo escolhido e o motivo.
 
 **Exemplo:**
 
-O modelo **XGBoost** apresentou o melhor desempenho considerando as métricas ROC-AUC e Recall, sendo selecionado como modelo final por apresentar maior capacidade de identificar clientes inadimplentes.
+O modelo HistGradientBoosting apresentou o melhor desempenho, alcançando AUC de 0,7659 e KS de 0,3976. Por esse motivo foi selecionado como modelo final para estimar a Probabilidade de Default (PD), utilizada posteriormente pela política de concessão de crédito..
 
 ---
 
@@ -269,4 +268,4 @@ O modelo **XGBoost** apresentou o melhor desempenho considerando as métricas RO
 
 🏫 FIA
 
-📅 2025
+📅 2026

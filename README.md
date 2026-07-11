@@ -263,7 +263,7 @@ O modelo **XGBoost** apresentou o melhor desempenho considerando as métricas RO
 
 **Daniel Azevedo**
 
-**Elizabeth**
+**Elizabeth Oliveira**
 
 📚 Pós Graduação em Engenharia de Dados
 

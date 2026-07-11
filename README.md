@@ -68,6 +68,58 @@ O objetivo deste projeto é desenvolver uma solução baseada em Machine Learnin
 └── 📄 .gitignore
 ```
 
+
+## 🔄 Fluxo dos Dados
+
+O projeto segue um pipeline estruturado para transformar os dados brutos em uma recomendação de crédito baseada em Machine Learning.
+
+```text
+application_train.csv (Kaggle)
+              │
+              ▼
+1_data_sanitization.py
+- Validação dos dados (Pydantic)
+- Limpeza e padronização
+- Tratamento de valores ausentes
+- Remoção de inconsistências
+              │
+              ▼
+clean_data.csv
+              │
+              ▼
+2_abt_transform.py
+- Engenharia de atributos
+- Seleção de variáveis
+- Encoding das variáveis categóricas
+- Imputação de valores faltantes
+              │
+              ▼
+abt.csv
+              │
+              ▼
+3_train.py
+- Divisão treino/teste
+- Treinamento dos modelos
+- Avaliação (ROC-AUC, KS e Gini)
+- Seleção do melhor modelo
+              │
+              ▼
+model_pd.pkl
+metrics.json
+test_predictions.csv
+              │
+              ▼
+credit_policy.py
+- Estima a Probabilidade de Default (PD)
+- Classifica o cliente por faixa de risco
+- Calcula o limite de crédito recomendado
+- Define o prazo máximo da operação
+              │
+              ▼
+Decisão Final de Crédito
+(Aprovar, Limite e Prazo)
+
+
 ## 📁 Descrição dos Diretórios
 
 | Diretório/Arquivo                           | Descrição                                                         |
